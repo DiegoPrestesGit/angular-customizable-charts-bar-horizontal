@@ -1,0 +1,62 @@
+.fullContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  max-width: 2050px;
+  padding: 20px;
+}
+
+.shining {
+  background-image: url("../assets/croped-shining.png");
+  background-color: #404040;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: absolute;
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
+.logo {
+  display: flex;
+  align-self: flex-start;
+  margin: 0 0 0 20px;
+  background-color: #d9d9d9d1;
+  width: 200px;
+  height: 180px;
+  font-size: 48px;
+  padding-left: 12px;
+  text-justify: distribute;
+}
+
+.center {
+  width: 66%;
+  height: 50vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.fullInput {
+  display: flex;
+  width: 100%;
+}
+
+.bigOlText {
+  font-family: '__Changa_One_cf5842', '__Changa_One_Fallback_cf5842';
+  font-size: 24px;
+}
+
+.thinText {
+  font-family: '__Changa_One_cf5842', '__Changa_One_Fallback_cf5842';
+  font-size: 18px;
+}
