@@ -1,0 +1,19 @@
+|- pages
+    |- <page_name>
+        |- index.js             # To do a default export of the main component
+        |- MainComponent.jsx    # Contains other subcomponents
+        |- main-component.css   # CSS for the main component
+        |- OtherComponents.jsx  # more than 1 file for child components that are used only in that page
+        |- __tests__            # Jest unit and snapshot tests
+|- components
+    |- index.js                 # Exports all the default components of each component as named exports
+    |- CommonCmpnt1
+        |- CommonCmpnt1.jsx
+        |- common-cmpnt-1.css
+        |- index.js             # To default export the component
+        |- __tests__
+    |- CommonCmpnt2
+        |- CommonCmpnt2.jsx
+        |- common-cmpnt-2.css
+        |- index.js             # To default export the component
+        |- __tests__
