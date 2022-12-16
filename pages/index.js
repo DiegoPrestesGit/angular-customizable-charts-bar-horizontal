@@ -1,8 +1,17 @@
-import { useContext } from 'react'
-import { useAuth } from '../components/firebase/context'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import firebaseApp from '../providers/firebase-app'
 import styles from '../styles/Home.module.scss'
 
 export default function Home() {
+  firebaseApp()
+  const googleProvider = new GoogleAuthProvider()
+  const authProvider = getAuth()
+
+  const signIn = async () => {
+    const res = await signInWithPopup(authProvider, googleProvider)
+    console.log(res)
+  }
+
   return (
     <div className={styles.fullContent}>
       <div className={styles.logo}>
