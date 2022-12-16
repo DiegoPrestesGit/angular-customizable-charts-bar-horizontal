@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import { useAuth } from '../components/firebase/context'
 import styles from '../styles/Home.module.scss'
 
 export default function Home() {
@@ -19,7 +21,7 @@ export default function Home() {
           </p>
           <div className={styles.fullInput}>
             <input type="email" placeholder="E-MAIL" />
-            <button onClick={() => console.log('GO!')}>ENTRAR</button>
+            <button onClick={() => signIn()}>ENTRAR</button>
           </div>
         </div>
       </div>
