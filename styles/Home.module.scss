@@ -115,17 +115,45 @@
 
 .loginGoogle {
   display: flex;
-  background-color: yellow;
   margin-top: 8px;
-  color: black;
   align-items: center;
   width: 56%;
   // justify-content: space-between;
   gap: 6%;
+  outline: 0;
+  border: 0;
 
   img {
-    background-color: red;
+    background-color: white;
     padding: 15px;
     margin: 4px 12px 4px 4px;
+    border-radius: 2px;
+  }
+
+  button {
+    display: flex;
+    font-family: '__Changa_One_cf5842', '__Changa_One_Fallback_cf5842';
+    width: 100%;
+    border-radius: 2px;
+    background-color: #4285F4;
+    color: white;
+    align-items: center;
+  // justify-content: space-between;
+    gap: 6%;
+    outline: 0;
+    border: 0;
+
+    border: 0.5px solid transparent;
+    outline: solid 0.1px transparent;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  button:active {
+    background-color: #3064b7;
+    border: 0.3px solid #063a8d;
+    outline: solid 0.1px #063a8d;
   }
 }
