@@ -11,7 +11,7 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID,
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 }
-console.log('configureixon', firebaseConfig)
+
 const newFirebaseApp = initializeApp(firebaseConfig)
 const firebaseApp = () => newFirebaseApp
 export default firebaseApp

@@ -32,6 +32,10 @@ export default function Home() {
             <input type="email" placeholder="E-MAIL" />
             <button onClick={() => signIn()}>ENTRAR</button>
           </div>
+          {/* <div className={styles.loginGoogle}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+            <p>Entrar com Google</p>
+          </div> */}
         </div>
       </div>
       <div className={styles.shining}></div>

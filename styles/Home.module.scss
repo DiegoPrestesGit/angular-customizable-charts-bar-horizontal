@@ -112,3 +112,20 @@
   font-size: 18px;
   text-shadow: rgb(204 51 204 / 50%) 5px 0px 6px, rgba(115, 26, 26, 0.5) -4px 0px 2px, rgb(44, 73, 127) 10px 0px 8px;
 }
+
+.loginGoogle {
+  display: flex;
+  background-color: yellow;
+  margin-top: 8px;
+  color: black;
+  align-items: center;
+  width: 56%;
+  // justify-content: space-between;
+  gap: 6%;
+
+  img {
+    background-color: red;
+    padding: 15px;
+    margin: 4px 12px 4px 4px;
+  }
+}
