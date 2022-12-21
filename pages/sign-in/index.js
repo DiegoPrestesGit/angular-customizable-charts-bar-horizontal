@@ -1,6 +1,14 @@
+import { withRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import styles from '../../styles/Signin.module.scss'
 
-export default function Home() {
+function SignIn({ router, ...props }) {
+  const [email, setEmail] = useState(
+    router && router.query && router.query.email ? router.query.email : ''
+  )
+
+  useEffect(() => console.log('emailzada', router.query), [props])
+
   return (
     <div className={styles.fullContent}>
       <div className={styles.logo}>
@@ -12,7 +20,12 @@ export default function Home() {
         <strong className={styles.signInText}>Cadastro</strong>
         <div className={styles.center}>
           <div className={styles.fullInput}>
-            <input type="email" placeholder="E-MAIL" />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="E-MAIL"
+            />
             <input type="password" placeholder="SENHA" />
             <input type="password" placeholder="CONFIRME A SENHA" />
             <input type="text" placeholder="COMO PREFERE SER CHAMADO?" />
@@ -24,3 +37,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default withRouter(SignIn)

@@ -1,6 +1,9 @@
+import { withRouter } from 'next/router'
+import { useContext, useEffect } from 'react'
+import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Home.module.scss'
 
-export default function Home() {
+function Movies() {
   return (
     <div className={styles.fullContent}>
       <div className={styles.logo}>
@@ -19,3 +22,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default withRouter(Movies)

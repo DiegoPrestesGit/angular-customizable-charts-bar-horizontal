@@ -1,16 +1,56 @@
-import { createContext, useContext } from 'react'
-import useFirebaseAuth from './auth'
+import { useRouter } from 'next/router'
+import { createContext, useContext, useState } from 'react'
 
-const authUserContext = createContext({
-  authUser: null,
-  loading: true,
-})
+const AuthContext = createContext()
+const { Provider } = AuthContext
 
-export default function AuthUserProvider({ children }) {
-  const auth = useFirebaseAuth()
+const AuthProvider = ({ children }) => {
+  const [authState, setAuthState] = useState({})
+  const [userData, setUserData] = useState({})
+
+  const setUserAuthInfo = ({ userAuth, token, user }) => {
+    localStorage.setItem('token', {
+      token,
+    })
+    setAuthState({ userAuth, token })
+    setUserData(user)
+  }
+
+  const getUserInfo = () => localStorage.getItem('token')
+
+  const isUserAuthenticated = () => {
+    console.log('xama', authState)
+    return !!authState.token
+  }
+
   return (
-    <authUserContext.Provider value={auth}>{children}</authUserContext.Provider>
+    <Provider
+      value={{
+        authState,
+        userData,
+        isUserAuthenticated,
+        setUserAuthInfo: (userAuthInfo) => setUserAuthInfo(userAuthInfo),
+        getUserInfo,
+      }}
+    >
+      {children}
+    </Provider>
   )
 }
 
-export const useAuth = () => useContext(authUserContext)
+const ProtectRoute = ({ children }) => {
+  const router = useRouter()
+  const authContext = useContext(AuthContext)
+  const isLoggedIn = authContext.isUserAuthenticated()
+  console.log('it isssss', isLoggedIn)
+  if (typeof window !== 'undefined') {
+    if (isLoggedIn) {
+      router.push('/movies')
+    } else if (!isLoggedIn && window.location.pathname === '/movies')
+      router.push('/')
+  }
+
+  return children
+}
+
+export { AuthContext, AuthProvider, ProtectRoute }

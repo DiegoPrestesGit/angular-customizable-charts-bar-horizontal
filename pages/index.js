@@ -7,8 +7,8 @@ import {
 } from 'firebase/auth'
 import firebaseApp from '../providers/firebase-app'
 import styles from '../styles/Home.module.scss'
-import AuthUserProvider from '../components/firebase/context'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
+import Router from 'next/router'
 
 export default function Home() {
   firebaseApp()
@@ -16,20 +16,33 @@ export default function Home() {
   const authProvider = getAuth()
 
   const [email, setEmail] = useState('')
+  const [loading, isLoading] = useState(false) // TODO: loading (for later)
 
   const change = (email) => {
     if (email == null) email = ''
     setEmail(email)
   }
 
-  const signIn = async () => {
+  const signInWithEmail = async (email) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/v1/user-by-email?email=${email}`
+      )
+
+      if (res.status == 404)
+        Router.push({ pathname: '/sign-in', query: { email } })
+
+      if (res.status == 200) {
+        const data = await res.json()
+        Router.push({ pathname: '/login', query: { email } })
+      }
+    } catch (err) {
+      console.error('signInWithEmail error', err)
+    }
+  }
+
+  const signInWithGoogle = async () => {
     const res = await signInWithPopup(authProvider, googleProvider)
-    // const res = await signInWithEmailAndPassword(
-    //   authProvider,
-    //   'diegosousaflo@hotmail.com',
-    //   'Kalisto@123'
-    // )
-    console.log(res)
   }
 
   return (
@@ -55,10 +68,10 @@ export default function Home() {
               onChange={(event) => change(event.target.value)}
               placeholder="E-MAIL"
             />
-            <button onClick={() => signIn()}>ENTRAR</button>
+            <button onClick={() => signInWithEmail(email)}>ENTRAR</button>
           </div>
           <div className={styles.loginGoogle}>
-            <button onClick={() => console.log('GO!')}>
+            <button onClick={() => signInWithGoogle()}>
               <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
               <p>Entrar com Google</p>
             </button>
