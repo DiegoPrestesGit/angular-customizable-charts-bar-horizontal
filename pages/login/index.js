@@ -40,8 +40,7 @@ function Login({ router, ...props }) {
       const userRes = await fetch(
         `http://localhost:8080/api/v1/user-by-email?email=${email}`
       )
-      // const token = authRes._tokenResponse
-      // console.log(token)
+
       const user = await userRes.json()
       authContext.setUserAuthInfo({
         userAuth: authRes.user,

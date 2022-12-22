@@ -1,6 +1,4 @@
 import { withRouter } from 'next/router'
-import { useContext, useEffect } from 'react'
-import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Home.module.scss'
 
 function Movies() {

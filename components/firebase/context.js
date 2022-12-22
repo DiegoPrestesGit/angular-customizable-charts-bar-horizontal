@@ -18,10 +18,7 @@ const AuthProvider = ({ children }) => {
 
   const getUserInfo = () => localStorage.getItem('token')
 
-  const isUserAuthenticated = () => {
-    console.log('xama', authState)
-    return !!authState.token
-  }
+  const isUserAuthenticated = () => !!authState.token
 
   return (
     <Provider
@@ -42,7 +39,7 @@ const ProtectRoute = ({ children }) => {
   const router = useRouter()
   const authContext = useContext(AuthContext)
   const isLoggedIn = authContext.isUserAuthenticated()
-  console.log('it isssss', isLoggedIn)
+  console.log('here we go')
   if (typeof window !== 'undefined') {
     if (isLoggedIn) {
       router.push('/movies')

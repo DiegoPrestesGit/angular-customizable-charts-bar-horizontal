@@ -1,13 +1,11 @@
 import { withRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styles from '../../styles/Signin.module.scss'
 
 function SignIn({ router, ...props }) {
   const [email, setEmail] = useState(
     router && router.query && router.query.email ? router.query.email : ''
   )
-
-  useEffect(() => console.log('emailzada', router.query), [props])
 
   return (
     <div className={styles.fullContent}>
