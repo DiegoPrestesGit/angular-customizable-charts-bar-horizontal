@@ -42,11 +42,7 @@ function Login({ router, ...props }) {
       )
 
       const user = await userRes.json()
-      authContext.setUserAuthInfo({
-        userAuth: authRes.user,
-        token: authRes._tokenResponse,
-        user,
-      })
+      authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
     } catch (err) {
       console.error('signInWithEmail error', err.code)
       if (err.code == 'auth/wrong-password') setWrongPassword(true)

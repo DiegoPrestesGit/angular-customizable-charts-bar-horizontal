@@ -8,17 +8,29 @@ const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({})
   const [userData, setUserData] = useState({})
 
-  const setUserAuthInfo = ({ userAuth, token, user }) => {
-    localStorage.setItem('token', {
-      token,
-    })
+  const setUserAuthInfo = (userAuth, token, user) => {
+    localStorage.setItem(
+      'token',
+      JSON.stringify({
+        token,
+        userAuth,
+      })
+    )
     setAuthState({ userAuth, token })
     setUserData(user)
   }
 
-  const getUserInfo = () => localStorage.getItem('token')
+  const getUserInfo = () =>
+    typeof window !== 'undefined' && localStorage.getItem('token')
 
-  const isUserAuthenticated = () => !!authState.token
+  const isUserAuthenticated = () => {
+    const userInfo = JSON.parse(getUserInfo())
+    console.log('userInfo', userInfo, authState)
+
+    return !!authState.token
+  }
+
+  const validateAuthToken = (token) => {}
 
   return (
     <Provider
@@ -26,7 +38,7 @@ const AuthProvider = ({ children }) => {
         authState,
         userData,
         isUserAuthenticated,
-        setUserAuthInfo: (userAuthInfo) => setUserAuthInfo(userAuthInfo),
+        setUserAuthInfo,
         getUserInfo,
       }}
     >
@@ -39,9 +51,10 @@ const ProtectRoute = ({ children }) => {
   const router = useRouter()
   const authContext = useContext(AuthContext)
   const isLoggedIn = authContext.isUserAuthenticated()
-  console.log('here we go')
+
   if (typeof window !== 'undefined') {
-    if (isLoggedIn) {
+    console.log(isLoggedIn, window.location.pathname)
+    if (isLoggedIn && window.location.pathname !== '/movies') {
       router.push('/movies')
     } else if (!isLoggedIn && window.location.pathname === '/movies')
       router.push('/')
