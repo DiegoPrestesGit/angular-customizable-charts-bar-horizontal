@@ -5,7 +5,6 @@ const AuthContext = createContext()
 const { Provider } = AuthContext
 
 const AuthProvider = ({ children }) => {
-  const [authState, setAuthState] = useState({})
   const [userData, setUserData] = useState({})
 
   const setUserAuthInfo = (userAuth, token, user) => {
@@ -14,10 +13,11 @@ const AuthProvider = ({ children }) => {
       JSON.stringify({
         token,
         userAuth,
+        user,
       })
     )
-    setAuthState({ userAuth, token })
-    setUserData(user)
+
+    setUserData({ userAuth, token, user })
   }
 
   const getUserInfo = () =>
@@ -25,17 +25,18 @@ const AuthProvider = ({ children }) => {
 
   const isUserAuthenticated = () => {
     const userInfo = JSON.parse(getUserInfo())
-    console.log('userInfo', userInfo, authState)
+    if (userInfo) {
+      if (!userData) setUserData(userInfo)
+    }
 
-    return !!authState.token
+    return !!userInfo.token
   }
 
-  const validateAuthToken = (token) => {}
+  // const validateAuthToken = (token) => {}
 
   return (
     <Provider
       value={{
-        authState,
         userData,
         isUserAuthenticated,
         setUserAuthInfo,
