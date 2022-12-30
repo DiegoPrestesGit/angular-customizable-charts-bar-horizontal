@@ -1,13 +1,16 @@
 import { withRouter } from 'next/router'
-import styles from '../../styles/Home.module.scss'
+import styles from '../../styles/Movies.module.scss'
 
 function Movies() {
   return (
     <div className={styles.fullContent}>
-      <div className={styles.logo}>
-        REALLY <br />
-        NICE <br />
-        LOGO
+      <div className={styles.top}>
+        <div className={styles.logo}>
+          REALLY <br />
+          NICE <br />
+          LOGO
+        </div>
+        <button onClick={() => console.log('SAIR')}>SAIR</button>
       </div>
       <div>
         <div className={styles.center}>
