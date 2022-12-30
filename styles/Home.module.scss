@@ -23,17 +23,46 @@
   z-index: -1;
 }
 
-.logo {
+.top {
   display: flex;
-  align-self: flex-start;
+  align-items: flex-start;
+  justify-content: space-between;
   margin: 0 0 0 20px;
-  background-color: #d9d9d9d1;
-  width: 160px;
+  width: 100%;
   height: 146px;
-  font-size: 36px;
-  padding-left: 12px;
-  text-justify: distribute;
-  border-radius: 4px;
+  padding: 0 12px 0 12px;
+
+  .logo {
+    margin: 0 0 0 20px;
+    background-color: #d9d9d9d1;
+    width: 160px;
+    height: 146px;
+    font-size: 36px;
+    padding-left: 12px;
+    text-justify: distribute;
+    border-radius: 4px;
+  }
+
+  button {
+    background-color: #C1050E;
+    font-family: '__Changa_One_cf5842', '__Changa_One_Fallback_cf5842';
+    border-width: 0 0 0 0;
+    font-size: 22px;
+    color: white;
+    border-radius: 2px;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  button:active {
+    border-width: 0.5px;
+    border-color: #750208;
+    background-color: #a30008;
+    outline-width: 0.5px;
+    outline: rgb(6, 3, 26);
+  }
 }
 
 .center {

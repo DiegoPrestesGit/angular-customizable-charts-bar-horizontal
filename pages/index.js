@@ -26,14 +26,14 @@ export default function Home() {
       if (res.status == 404)
         Router.push({ pathname: '/sign-in', query: { email } })
 
-      if (res.status == 200) {
-        const data = await res.json()
+      if (res.status == 200)
         Router.push({ pathname: '/login', query: { email } })
-      }
     } catch (err) {
       console.error('signInWithEmail error', err)
     }
   }
+
+  const createAccount = () => Router.push({ pathname: '/sign-in' })
 
   const signInWithGoogle = async () => {
     const res = await signInWithPopup(authProvider, googleProvider)
@@ -41,10 +41,13 @@ export default function Home() {
 
   return (
     <div className={styles.fullContent}>
-      <div className={styles.logo}>
-        REALLY <br />
-        NICE <br />
-        LOGO
+      <div className={styles.top}>
+        <div className={styles.logo}>
+          REALLY <br />
+          NICE <br />
+          LOGO
+        </div>
+        <button onClick={() => createAccount()}>CRIAR CONTA</button>
       </div>
       <div>
         <div className={styles.center}>

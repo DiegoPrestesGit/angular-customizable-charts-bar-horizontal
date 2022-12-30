@@ -132,3 +132,11 @@
   font-size: 18px;
   text-shadow: rgb(204 51 204 / 50%) 5px 0px 6px, rgba(115, 26, 26, 0.5) -4px 0px 2px, rgb(44, 73, 127) 10px 0px 8px;
 }
+
+.wrong {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
