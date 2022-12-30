@@ -1,3 +1,4 @@
+import { updateCurrentUser } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useState } from 'react'
 
@@ -32,8 +33,6 @@ const AuthProvider = ({ children }) => {
     return !!userInfo.token
   }
 
-  // const validateAuthToken = (token) => {}
-
   return (
     <Provider
       value={{
@@ -54,7 +53,6 @@ const ProtectRoute = ({ children }) => {
   const isLoggedIn = authContext.isUserAuthenticated()
 
   if (typeof window !== 'undefined') {
-    console.log(isLoggedIn, window.location.pathname)
     if (isLoggedIn && window.location.pathname !== '/movies') {
       router.push('/movies')
     } else if (!isLoggedIn && window.location.pathname === '/movies')

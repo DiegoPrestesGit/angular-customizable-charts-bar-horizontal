@@ -5,13 +5,8 @@ import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Login.module.scss'
 
-// TODO: refresh token
 function Login({ router, ...props }) {
   const authContext = useContext(AuthContext)
-
-  useEffect(() => {
-    authContext.isUserAuthenticated() && router.push('/movies')
-  }, [])
 
   const [email, setEmail] = useState(
     router && router.query && router.query.email ? router.query.email : ''

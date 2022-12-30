@@ -1,10 +1,4 @@
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import firebaseApp from '../providers/firebase-app'
 import styles from '../styles/Home.module.scss'
 import { useState } from 'react'
