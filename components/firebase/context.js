@@ -21,6 +21,11 @@ const AuthProvider = ({ children }) => {
     setUserData({ userAuth, token, user })
   }
 
+  const removeUserAuthInfo = () => {
+    localStorage.removeItem('token')
+    setUserData({})
+  }
+
   const getUserInfo = () =>
     typeof window !== 'undefined' && localStorage.getItem('token')
 
@@ -30,7 +35,7 @@ const AuthProvider = ({ children }) => {
       if (!userData) setUserData(userInfo)
     }
 
-    return !!userInfo.token
+    return !!userInfo && !!userInfo.token
   }
 
   return (
@@ -39,6 +44,7 @@ const AuthProvider = ({ children }) => {
         userData,
         isUserAuthenticated,
         setUserAuthInfo,
+        removeUserAuthInfo,
         getUserInfo,
       }}
     >

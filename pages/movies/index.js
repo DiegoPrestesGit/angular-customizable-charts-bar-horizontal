@@ -1,7 +1,10 @@
 import { withRouter } from 'next/router'
+import { useContext } from 'react'
+import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Movies.module.scss'
 
 function Movies() {
+  const authContext = useContext(AuthContext)
   return (
     <div className={styles.fullContent}>
       <div className={styles.top}>
@@ -10,7 +13,7 @@ function Movies() {
           NICE <br />
           LOGO
         </div>
-        <button onClick={() => console.log('SAIR')}>SAIR</button>
+        <button onClick={() => authContext.removeUserAuthInfo()}>SAIR</button>
       </div>
       <div>
         <div className={styles.center}>

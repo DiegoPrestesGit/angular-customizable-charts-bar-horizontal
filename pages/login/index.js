@@ -1,7 +1,7 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import Image from 'next/image'
-import { useRouter, withRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
+import { withRouter } from 'next/router'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Login.module.scss'
 
