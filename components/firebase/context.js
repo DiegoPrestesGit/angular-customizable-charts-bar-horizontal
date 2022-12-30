@@ -1,4 +1,3 @@
-import { updateCurrentUser } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useState } from 'react'
 
@@ -27,10 +26,12 @@ const AuthProvider = ({ children }) => {
   }
 
   const getUserInfo = () =>
-    typeof window !== 'undefined' && localStorage.getItem('token')
+    typeof window !== 'undefined' &&
+    localStorage.getItem('token') &&
+    JSON.parse(localStorage.getItem('token'))
 
   const isUserAuthenticated = () => {
-    const userInfo = JSON.parse(getUserInfo())
+    const userInfo = getUserInfo()
     if (userInfo) {
       if (!userData) setUserData(userInfo)
     }
