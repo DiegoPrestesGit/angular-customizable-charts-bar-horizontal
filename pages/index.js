@@ -1,13 +1,16 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import firebaseApp from '../providers/firebase-app'
 import styles from '../styles/Home.module.scss'
-import { useState } from 'react'
-import Router from 'next/router'
+import { useContext, useState } from 'react'
+import Router, { withRouter } from 'next/router'
+import { AuthContext } from '../components/firebase/context'
 
-export default function Home() {
+function Home() {
   firebaseApp()
   const googleProvider = new GoogleAuthProvider()
   const authProvider = getAuth()
+
+  const authContext = useContext(AuthContext)
 
   const [email, setEmail] = useState('')
   const [loading, isLoading] = useState(false) // TODO: loading (for later)
@@ -36,7 +39,25 @@ export default function Home() {
   const createAccount = () => Router.push({ pathname: '/sign-in' })
 
   const signInWithGoogle = async () => {
-    const res = await signInWithPopup(authProvider, googleProvider)
+    try {
+      const authRes = await signInWithPopup(authProvider, googleProvider)
+
+      const body = JSON.stringify({
+        email: authRes.user.email,
+        displayName: authRes.user.displayName,
+      })
+
+      const userRes = await fetch('http://localhost:8080/api/v1/user-google', {
+        method: 'post',
+        body,
+      })
+
+      const user = await userRes.json()
+      console.log(authRes.user, authRes._tokenResponse, user)
+      authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
+    } catch (err) {
+      console.error('signInWithGoogle error', { err, errCode: err.code })
+    }
   }
 
   return (
@@ -79,3 +100,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default withRouter(Home)

@@ -5,6 +5,9 @@ import styles from '../../styles/Movies.module.scss'
 
 function Movies() {
   const authContext = useContext(AuthContext)
+
+  const { user } = authContext.getUserInfo()
+
   return (
     <div className={styles.fullContent}>
       <div className={styles.top}>
@@ -18,7 +21,7 @@ function Movies() {
       <div>
         <div className={styles.center}>
           <strong className={styles.bigOlText}>
-            UH YEAH, YOU ARE LOGGED IN, BABY
+            UH YEAH, YOU ARE LOGGED IN, {user.displayName}
           </strong>
         </div>
       </div>
