@@ -6,7 +6,7 @@ import styles from '../../styles/Movies.module.scss'
 function Movies() {
   const authContext = useContext(AuthContext)
 
-  const { user } = authContext.getUserInfo()
+  const userInfo = authContext.getUserInfo()
 
   return (
     <div className={styles.fullContent}>
@@ -16,14 +16,15 @@ function Movies() {
           NICE <br />
           LOGO
         </div>
-        <button onClick={() => authContext.removeUserAuthInfo()}>SAIR</button>
+        <div className="right-side">
+          <strong className={styles.bigOlText}>
+            Bem-vindo, {userInfo && userInfo.user && userInfo.user.displayName}
+          </strong>
+          <button onClick={() => authContext.removeUserAuthInfo()}>SAIR</button>
+        </div>
       </div>
       <div>
-        <div className={styles.center}>
-          <strong className={styles.bigOlText}>
-            UH YEAH, YOU ARE LOGGED IN, {user.displayName}
-          </strong>
-        </div>
+        <div className={styles.center}>HAHAHAHAH</div>
       </div>
       <div className={styles.shining}></div>
     </div>
