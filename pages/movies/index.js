@@ -2,6 +2,7 @@ import { withRouter } from 'next/router'
 import { useContext } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Movies.module.scss'
+import Movie from '../../components/movie'
 
 function Movies() {
   const authContext = useContext(AuthContext)
@@ -24,7 +25,7 @@ function Movies() {
         </div>
       </div>
       <div>
-        <div className={styles.center}>HAHAHAHAH</div>
+        <Movie />
       </div>
       <div className={styles.shining}></div>
     </div>

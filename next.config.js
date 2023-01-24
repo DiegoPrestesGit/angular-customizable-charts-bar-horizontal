@@ -10,6 +10,7 @@ const nextConfig = {
     FIREBASE_MESSAGING_SENDER_ID: '456985856502',
     FIREBASE_APP_ID: '1:456985856502:web:c46fb6c765e32f4fbe1fd7',
     FIREBASE_MEASUREMENT_ID: 'G-MFJBJC43KR',
+    TMDB_POSTER_HOST: 'https://image.tmdb.org/t/p/w500',
   },
 }
 
