@@ -8,7 +8,7 @@
   // max-width: 2050px;
   // min-width: 100vh;
   padding: 20px;
-  background-color: #110c3f;
+  background-color: #090530;
 }
 
 .top {
@@ -60,4 +60,15 @@
     outline-width: 0.5px;
     outline: rgb(6, 3, 26);
   }
+}
+
+.center {
+  width: 66%;
+  height: 50vh;
+  color: white;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
 }
