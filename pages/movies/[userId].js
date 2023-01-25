@@ -8,7 +8,7 @@ import mockMovies from '../../mock-sample.json'
 function Movies({ props: { userRatings }, ...context }) {
   const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
-  console.log(userInfo)
+
   return (
     <div className={styles.fullContent}>
       <div className={styles.top}>
@@ -49,7 +49,9 @@ Movies.getInitialProps = async (context) => {
   const resUserRatings = await fetch(
     `${process.env.GO_CRUD}/api/v1/rating-by-user?userId=${context.query.userId}`
   )
-  const userRatings = await resUserRatings.json()
+
+  const ratingsJson = await resUserRatings.json()
+  const userRatings = ratingsJson != null ? ratingsJson : []
 
   return { props: { userRatings } }
 }

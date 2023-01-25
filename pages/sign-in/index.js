@@ -82,20 +82,19 @@ function SignIn({ router, ...props }) {
         email,
         password
       )
-      console.log(authRes)
 
-      const createdUser = {
-        _id: responseData.InsertedId,
-        email,
-        displayName,
-      }
+      const resUserInfo = await fetch(
+        `http://localhost:8080/api/v1/user-by-email?email=${email}`
+      )
 
+      const userInfo = await resUserInfo.json()
       authContext.setUserAuthInfo(
         authRes.user,
         authRes._tokenResponse,
-        createdUser
+        userInfo
       )
-      Router.push({ pathname: '/movies' })
+
+      Router.push({ pathname: `/movies/${userInfo.userId}` })
     } catch (err) {
       console.log('createUser error', err)
       setError({
