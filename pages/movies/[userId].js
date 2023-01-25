@@ -28,10 +28,15 @@ function Movies({ props: { userRatings }, ...context }) {
   return (
     <div className={styles.fullContent}>
       <div className={styles.top}>
-        <div className={styles.logo}>
-          REALLY <br />
-          NICE <br />
-          LOGO
+        <div className={styles.leftSide}>
+          <div className={styles.logo}>
+            REALLY <br />
+            NICE <br />
+            LOGO
+          </div>
+          <p>
+            Qnt. de filmes avaliados: <strong>{userRatings.length}</strong>
+          </p>
         </div>
         <div className={styles.withSearch}>
           <div className="right-side">

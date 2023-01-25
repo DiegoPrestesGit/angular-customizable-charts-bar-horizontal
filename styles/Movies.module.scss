@@ -27,8 +27,22 @@
     text-shadow: rgb(204 51 204 / 50%) 5px 0px 6px, rgba(115, 26, 26, 0.5) -4px 0px 2px, rgb(44, 73, 127) 10px 0px 8px;
   }
 
+  .leftSide {
+    display: flex;
+    gap: 8px;
+    // justify-content: center;
+
+    p {
+      font-size: 20px;
+      color: white;
+    }
+
+    strong {
+      font-size: 24px;
+    }
+  }
+
   .logo {
-    margin: 0 0 0 20px;
     background-color: #d9d9d9d1;
     width: 100px;
     height: 88px;
