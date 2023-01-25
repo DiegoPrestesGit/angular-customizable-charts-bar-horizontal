@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Movies.module.scss'
 import Movie from '../../components/movie'
+import mockMovies from '../../mock-sample.json'
 
 function Movies() {
   const authContext = useContext(AuthContext)
@@ -24,8 +25,10 @@ function Movies() {
           <button onClick={() => authContext.removeUserAuthInfo()}>SAIR</button>
         </div>
       </div>
-      <div>
-        <Movie />
+      <div className={styles.movieList}>
+        {mockMovies.map((singleMovie) => (
+          <Movie movieData={singleMovie} />
+        ))}
       </div>
       <div className={styles.shining}></div>
     </div>

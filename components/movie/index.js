@@ -1,15 +1,23 @@
+import React, { useState } from 'react'
 import styles from '../../styles/Movie.module.scss'
+// import Rating from '../rating'
+import { Rating } from 'react-simple-star-rating'
 
-// {
-//   "backdrop_path": "/3Rfvhy1Nl6sSGJwyjb0QiZzZYlB.jpg",
-//   "id": 862,
-//   "title": "Toy Story",
-//   "original_title": "Toy Story",
-//   "poster_path": "/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
-//   "vote_average": 7.965,
-//   "genres": "Adventure|Animation|Children|Comedy|Fantasy"
-// }
-export default function Movie() {
-  console.log(process.env.TMDB_POSTER_HOST)
-  return <div className={styles.fullMovie}>MA MOVIE</div>
+export default function Movie({ movieData, ...props }) {
+  const [rating, setRating] = useState(0)
+
+  const handleRating = (rate) => {
+    setRating(rate)
+  }
+
+  return (
+    <div className={styles.fullMovie}>
+      {/* <Rating /> */}
+      <Rating onClick={handleRating} allowFraction={true} size={24} />
+      <img src={`${process.env.TMDB_POSTER_HOST}${movieData.poster_path}`} />
+      <strong>
+        {movieData.title} ({movieData.release_date.substr(0, 4)})
+      </strong>
+    </div>
+  )
 }
