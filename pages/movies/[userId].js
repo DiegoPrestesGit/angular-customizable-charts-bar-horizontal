@@ -1,13 +1,11 @@
 import { withRouter } from 'next/router'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Movies.module.scss'
 import Movie from '../../components/movie'
 import mockMovies from '../../mock-sample.json'
 
-function Movies({ myUser, myctx, ...props }) {
-  const [userRatings, setUserRatings] = useState([])
-
+function Movies({ props: { userRatings }, ...context }) {
   const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
 
@@ -27,31 +25,33 @@ function Movies({ myUser, myctx, ...props }) {
         </div>
       </div>
       <div className={styles.movieList}>
-        {mockMovies.map((singleMovie) => (
-          <Movie
-            movieData={singleMovie}
-            key={singleMovie.id}
-            userId={userInfo && userInfo.user.userId}
-          />
-        ))}
+        {mockMovies.map((singleMovie) => {
+          const rated = userRatings.find(
+            (rating) => rating.movieId == singleMovie.id
+          )
+
+          return (
+            <Movie
+              movieData={singleMovie}
+              key={singleMovie.id}
+              userId={userInfo && userInfo.user.userId}
+              movieRating={(rated && rated.ratingValue) || 0}
+            />
+          )
+        })}
       </div>
       <div className={styles.shining}></div>
     </div>
   )
 }
 
-// export async function getServerSideProps(context) {
-//   console.log('HJAHAHA', context)
-//   const userRatings = await fetch(`${process.env.GO_CRUD}/api/v1/rating-by-user?userId=${}`, {method: 'GET'})
-
-//   return {
-//     props: { userRatings: 'BONHA' },
-//   }
-// }
-
 Movies.getInitialProps = async (context) => {
-  console.log('AAA', context)
-  return { props: {} }
+  const resUserRatings = await fetch(
+    `${process.env.GO_CRUD}/api/v1/rating-by-user?userId=${context.query.userId}`
+  )
+  const userRatings = await resUserRatings.json()
+
+  return { props: { userRatings } }
 }
 
 export default withRouter(Movies)
