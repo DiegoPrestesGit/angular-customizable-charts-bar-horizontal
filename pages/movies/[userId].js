@@ -6,10 +6,9 @@ import Movie from '../../components/movie'
 import mockMovies from '../../mock-sample.json'
 
 function Movies({ props: { userRatings }, ...context }) {
-  console.log(mockMovies.length)
   const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
-
+  console.log(userInfo)
   return (
     <div className={styles.fullContent}>
       <div className={styles.top}>
@@ -27,9 +26,9 @@ function Movies({ props: { userRatings }, ...context }) {
       </div>
       <div className={styles.movieList}>
         {mockMovies.map((singleMovie) => {
-          const rated = userRatings.find(
-            (rating) => rating.movieId == singleMovie.id
-          )
+          const rated = userRatings
+            ? userRatings.find((rating) => rating.movieId == singleMovie.id)
+            : undefined
 
           return (
             <Movie
