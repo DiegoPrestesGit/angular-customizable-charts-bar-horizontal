@@ -3,9 +3,9 @@ import styles from '../../styles/Movie.module.scss'
 // import Rating from '../rating'
 import { Rating } from 'react-simple-star-rating'
 
-export default function Movie({ movieData, userId, ...props }) {
-  const [rating, setRating] = useState(0)
-
+export default function Movie({ movieData, userId, movieRating, ...context }) {
+  const [rating, setRating] = useState(movieRating)
+  // console.log(movieRating)
   const handleRating = async (ratingValue) => {
     setRating(ratingValue)
 
@@ -22,8 +22,12 @@ export default function Movie({ movieData, userId, ...props }) {
 
   return (
     <div className={styles.fullMovie}>
-      {/* <Rating /> */}
-      <Rating onClick={handleRating} allowFraction={true} size={24} />
+      <Rating
+        onClick={handleRating}
+        allowFraction={true}
+        size={24}
+        initialValue={movieRating}
+      />
       <img src={`${process.env.TMDB_POSTER_HOST}${movieData.poster_path}`} />
       <strong>
         {movieData.title} ({movieData.release_date.substr(0, 4)})

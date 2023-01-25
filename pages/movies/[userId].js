@@ -6,6 +6,7 @@ import Movie from '../../components/movie'
 import mockMovies from '../../mock-sample.json'
 
 function Movies({ props: { userRatings }, ...context }) {
+  console.log(mockMovies.length)
   const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
 
