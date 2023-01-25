@@ -11,6 +11,7 @@ const nextConfig = {
     FIREBASE_APP_ID: '1:456985856502:web:c46fb6c765e32f4fbe1fd7',
     FIREBASE_MEASUREMENT_ID: 'G-MFJBJC43KR',
     TMDB_POSTER_HOST: 'https://image.tmdb.org/t/p/w500',
+    GO_CRUD: 'http://localhost:8080',
   },
 }
 

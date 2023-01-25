@@ -47,13 +47,13 @@ function Home() {
         displayName: authRes.user.displayName,
       })
 
-      const userRes = await fetch('http://localhost:8080/api/v1/user-google', {
+      const userRes = await fetch(`${process.env.GO_CRUD}/api/v1/user-google`, {
         method: 'post',
         body,
       })
 
       const user = await userRes.json()
-      console.log(authRes.user, authRes._tokenResponse, user)
+      // console.log(authRes.user, authRes._tokenResponse, user)
       authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
     } catch (err) {
       console.error('signInWithGoogle error', { err, errCode: err.code })

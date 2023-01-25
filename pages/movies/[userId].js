@@ -1,13 +1,14 @@
 import { withRouter } from 'next/router'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Movies.module.scss'
 import Movie from '../../components/movie'
 import mockMovies from '../../mock-sample.json'
 
-function Movies() {
-  const authContext = useContext(AuthContext)
+function Movies({ myUser, myctx, ...props }) {
+  const [userRatings, setUserRatings] = useState([])
 
+  const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
 
   return (
@@ -27,12 +28,30 @@ function Movies() {
       </div>
       <div className={styles.movieList}>
         {mockMovies.map((singleMovie) => (
-          <Movie movieData={singleMovie} />
+          <Movie
+            movieData={singleMovie}
+            key={singleMovie.id}
+            userId={userInfo && userInfo.user.userId}
+          />
         ))}
       </div>
       <div className={styles.shining}></div>
     </div>
   )
+}
+
+// export async function getServerSideProps(context) {
+//   console.log('HJAHAHA', context)
+//   const userRatings = await fetch(`${process.env.GO_CRUD}/api/v1/rating-by-user?userId=${}`, {method: 'GET'})
+
+//   return {
+//     props: { userRatings: 'BONHA' },
+//   }
+// }
+
+Movies.getInitialProps = async (context) => {
+  console.log('AAA', context)
+  return { props: {} }
 }
 
 export default withRouter(Movies)

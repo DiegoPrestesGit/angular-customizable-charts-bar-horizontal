@@ -59,10 +59,12 @@ const ProtectRoute = ({ children }) => {
   const authContext = useContext(AuthContext)
   const isLoggedIn = authContext.isUserAuthenticated()
 
+  const userInfo = authContext.getUserInfo()
+
   if (typeof window !== 'undefined') {
-    if (isLoggedIn && window.location.pathname !== '/movies') {
-      router.push('/movies')
-    } else if (!isLoggedIn && window.location.pathname === '/movies')
+    if (isLoggedIn && !window.location.pathname.includes('/movies')) {
+      router.push(`/movies/${userInfo.user.userId}`)
+    } else if (!isLoggedIn && window.location.pathname.includes('/movies'))
       router.push('/')
   }
 

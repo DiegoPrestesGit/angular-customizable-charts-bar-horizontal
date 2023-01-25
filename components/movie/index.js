@@ -3,11 +3,21 @@ import styles from '../../styles/Movie.module.scss'
 // import Rating from '../rating'
 import { Rating } from 'react-simple-star-rating'
 
-export default function Movie({ movieData, ...props }) {
+export default function Movie({ movieData, userId, ...props }) {
   const [rating, setRating] = useState(0)
 
-  const handleRating = (rate) => {
-    setRating(rate)
+  const handleRating = async (ratingValue) => {
+    setRating(ratingValue)
+
+    const body = JSON.stringify({
+      userId: userId,
+      movieId: movieData.id.toString(),
+      ratingValue,
+    })
+    fetch(`${process.env.GO_CRUD}/api/v1/rating`, {
+      method: 'POST',
+      body,
+    })
   }
 
   return (
