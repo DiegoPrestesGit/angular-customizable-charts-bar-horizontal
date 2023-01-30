@@ -1,14 +1,37 @@
 import { withRouter } from 'next/router'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Movies.module.scss'
 import Movie from '../../components/movie'
-import mockMovies from '../../mock-sample.json'
+import moviesFullData from '../../mock-movies.json'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
+import PaginationNumber from '../../components/pagination-number'
 
 function Movies({ props: { userRatings }, ...context }) {
   const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
+
+  const [movies, setMovies] = useState([])
+  const [page, setPage] = useState(1)
+
+  const moviesPerPage = 200
+  const totalPages = Math.ceil(moviesFullData.length / moviesPerPage)
+
+  useEffect(() => {
+    const currentPageMovies = moviesFullData.slice(
+      (page - 1) * moviesPerPage,
+      page * moviesPerPage
+    )
+    setMovies(currentPageMovies)
+  }, [])
+
+  useEffect(() => {
+    const currentPageMovies = moviesFullData.slice(
+      (page - 1) * moviesPerPage,
+      page * moviesPerPage
+    )
+    setMovies(currentPageMovies)
+  }, [page])
 
   const [isSearch, setIsSearch] = useState(false)
   const [findedMovies, setFindedMovies] = useState([])
@@ -20,79 +43,94 @@ function Movies({ props: { userRatings }, ...context }) {
       setIsSearch(false)
       return
     }
-    const findIt = mockMovies.filter((mov) => mov.title.includes(searchValue))
+    const findIt = moviesFullData.filter((mov) =>
+      mov.title.toLowerCase().includes(searchValue.toLowerCase())
+    )
     setIsSearch(true)
     setFindedMovies(findIt)
   }
 
   return (
-    <div className={styles.fullContent}>
-      <div className={styles.top}>
-        <div className={styles.leftSide}>
-          <div className={styles.logo}>
-            REALLY <br />
-            NICE <br />
-            LOGO
+    <>
+      <div className={styles.fullContent}>
+        <div className={styles.top}>
+          <div className={styles.leftSide}>
+            <div className={styles.logo}>
+              REALLY <br />
+              NICE <br />
+              LOGO
+            </div>
+            <p>
+              Qnt. de filmes avaliados: <strong>{userRatings.length}</strong>
+            </p>
           </div>
-          <p>
-            Qnt. de filmes avaliados: <strong>{userRatings.length}</strong>
-          </p>
+          <div className={styles.withSearch}>
+            <div className="right-side">
+              <strong className={styles.bigOlText}>
+                Bem-vindo,{' '}
+                {userInfo && userInfo.user && userInfo.user.displayName}
+              </strong>
+              <button onClick={() => authContext.removeUserAuthInfo()}>
+                SAIR
+              </button>
+            </div>
+            <div className={styles.fullInput}>
+              <input
+                type="text"
+                ref={searchInputRef}
+                placeholder="PROCURAR FILME"
+              />
+              <button onClick={() => searchMovie()}>
+                <HiMagnifyingGlass />
+              </button>
+            </div>
+          </div>
         </div>
-        <div className={styles.withSearch}>
-          <div className="right-side">
-            <strong className={styles.bigOlText}>
-              Bem-vindo,{' '}
-              {userInfo && userInfo.user && userInfo.user.displayName}
-            </strong>
-            <button onClick={() => authContext.removeUserAuthInfo()}>
-              SAIR
-            </button>
-          </div>
-          <div className={styles.fullInput}>
-            <input
-              type="text"
-              ref={searchInputRef}
-              placeholder="PROCURAR FILME"
-            />
-            <button onClick={() => searchMovie()}>
-              <HiMagnifyingGlass />
-            </button>
-          </div>
+        <div className={styles.movieList}>
+          {isSearch
+            ? findedMovies.map((singleMovie) => {
+                const rated = userRatings
+                  ? userRatings.find(
+                      (rating) => rating.movieId == singleMovie.id
+                    )
+                  : undefined
+
+                return (
+                  <Movie
+                    movieData={singleMovie}
+                    key={singleMovie.id}
+                    userId={userInfo && userInfo.user.userId}
+                    movieRating={(rated && rated.ratingValue) || 0}
+                  />
+                )
+              })
+            : movies.map((singleMovie) => {
+                const rated = userRatings
+                  ? userRatings.find(
+                      (rating) => rating.movieId == singleMovie.id
+                    )
+                  : undefined
+
+                return (
+                  <Movie
+                    movieData={singleMovie}
+                    key={singleMovie.id}
+                    userId={userInfo && userInfo.user.userId}
+                    movieRating={(rated && rated.ratingValue) || 0}
+                  />
+                )
+              })}
         </div>
+        <div className={styles.shining}></div>
+        {!isSearch && (
+          <PaginationNumber
+            totalPageNumber={totalPages}
+            currentPage={page}
+            setPage={setPage}
+          />
+        )}
       </div>
-      <div className={styles.movieList}>
-        {isSearch
-          ? findedMovies.map((singleMovie) => {
-              const rated = userRatings
-                ? userRatings.find((rating) => rating.movieId == singleMovie.id)
-                : undefined
-
-              return (
-                <Movie
-                  movieData={singleMovie}
-                  key={singleMovie.id}
-                  userId={userInfo && userInfo.user.userId}
-                  movieRating={(rated && rated.ratingValue) || 0}
-                />
-              )
-            })
-          : mockMovies.map((singleMovie) => {
-              const rated = userRatings
-                ? userRatings.find((rating) => rating.movieId == singleMovie.id)
-                : undefined
-
-              return (
-                <Movie
-                  movieData={singleMovie}
-                  key={singleMovie.id}
-                  userId={userInfo && userInfo.user.userId}
-                  movieRating={(rated && rated.ratingValue) || 0}
-                />
-              )
-            })}
-      </div>
-      <div className={styles.shining}></div>
-    </div>
+    </>
   )
 }
 
