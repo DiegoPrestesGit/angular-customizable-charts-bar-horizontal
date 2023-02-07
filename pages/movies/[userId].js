@@ -60,9 +60,12 @@ function Movies({ props: { userRatings }, ...context }) {
               NICE <br />
               LOGO
             </div>
-            <p>
-              Qnt. de filmes avaliados: <strong>{userRatings.length}</strong>
-            </p>
+            <div className={styles.leftSideTwo}>
+              <p>
+                Qnt. de filmes avaliados: <strong>{userRatings.length}</strong>
+              </p>
+              <button>RECOMENDAÇÕES</button>
+            </div>
           </div>
           <div className={styles.withSearch}>
             <div className="right-side">
