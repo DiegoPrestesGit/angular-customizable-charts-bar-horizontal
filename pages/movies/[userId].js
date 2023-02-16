@@ -13,6 +13,7 @@ function Movies({ props: { userRatings }, ...context }) {
 
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
+  const [isRecommendation, setIsRecommendation] = useState(false)
 
   const moviesPerPage = 200
   const totalPages = Math.ceil(moviesFullData.length / moviesPerPage)
@@ -36,6 +37,18 @@ function Movies({ props: { userRatings }, ...context }) {
   const [isSearch, setIsSearch] = useState(false)
   const [findedMovies, setFindedMovies] = useState([])
   const searchInputRef = useRef()
+
+  const recommendations = async () => {
+    const userId = userInfo.user.userId
+    const recommended = await (
+      await fetch(`http://localhost:5000/api?userId=${userId}`)
+    ).json()
+
+    const recommendedMovies = moviesFullData.filter((dataMovie) =>
+      recommended.some((recMovie) => recMovie == dataMovie.id)
+    )
+    setMovies(recommendedMovies)
+  }
 
   const searchMovie = () => {
     const searchValue = searchInputRef.current.value
@@ -64,7 +77,7 @@ function Movies({ props: { userRatings }, ...context }) {
               <p>
                 Qnt. de filmes avaliados: <strong>{userRatings.length}</strong>
               </p>
-              <button>RECOMENDAÇÕES</button>
+              <button onClick={recommendations}>RECOMENDAÇÕES</button>
             </div>
           </div>
           <div className={styles.withSearch}>

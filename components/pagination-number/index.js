@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from '../../styles/PaginationNumber.module.scss'
 
 export default function PaginationNumber({
@@ -7,17 +7,16 @@ export default function PaginationNumber({
   setPage,
   ...context
 }) {
-  const paging = (page) => {
-    setPage(page)
-    console.log('ma page', page)
-  }
-
   return (
     <div className={styles.fullContent}>
       Páginas
       <div className={styles.allPages}>
         {[...Array(totalPageNumber)].map((_, i) => (
-          <button className={styles.pageNumber} onClick={() => paging(i + 1)}>
+          <button
+            className={styles.pageNumber}
+            key={i}
+            onClick={() => setPage(i + 1)}
+          >
             {i + 1}
           </button>
         ))}
