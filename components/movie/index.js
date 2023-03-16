@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from '../../styles/Movie.module.scss'
 // import Rating from '../rating'
 import { Rating } from 'react-simple-star-rating'
+import axios from 'axios'
 
 export default function Movie({ movieData, userId, movieRating, ...context }) {
   const [rating, setRating] = useState(movieRating)
@@ -9,15 +10,17 @@ export default function Movie({ movieData, userId, movieRating, ...context }) {
   const handleRating = async (ratingValue) => {
     setRating(ratingValue)
 
-    const body = JSON.stringify({
+    const body = {
       userId: userId,
       movieId: movieData.id.toString(),
       ratingValue,
-    })
-    fetch(`${process.env.GO_CRUD}/api/v1/rating`, {
-      method: 'POST',
-      body,
-    })
+    }
+
+    const a = await axios.post(
+      `${process.env.GO_CRUD}/api/v1/rating/create`,
+      body
+    )
+    console.log(a)
   }
 
   return (

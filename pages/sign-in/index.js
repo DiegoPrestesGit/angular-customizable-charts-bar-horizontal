@@ -1,4 +1,5 @@
 import Router, { withRouter } from 'next/router'
+import axios from 'axios'
 import { useContext, useState } from 'react'
 import styles from '../../styles/Signin.module.scss'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
@@ -37,6 +38,7 @@ function SignIn({ router, ...props }) {
         setError({ showError: true, msg: 'não é um e-mail válido!' })
         return
       }
+
       if (password !== confirmPassword) {
         setError({
           showError: true,
@@ -46,26 +48,19 @@ function SignIn({ router, ...props }) {
       }
       setError({ showError: false, msg: '' })
 
-      const body = JSON.stringify({
+      const body = {
         email,
         displayName,
         password,
         confirmPassword,
-      })
-
-      const res = await fetch('http://localhost:8080/api/v1/user', {
-        method: 'POST',
-        body,
-      })
-
-      const responseData = await res.json()
-
-      if (responseData && responseData.message == 'user already exists') {
-        setError({ showError: true, msg: 'esse e-mail já foi cadastrado!' })
-        return
       }
 
-      if (res.status != 200) {
+      const { data: newUser, status } = await axios.post(
+        'http://localhost:8080/api/v1/user/create',
+        body
+      )
+
+      if (status != 201) {
         setError({
           showError: true,
           msg: 'ocorreu um erro inesperado e não estávamos esperando por isso!',
@@ -73,7 +68,6 @@ function SignIn({ router, ...props }) {
         return
       }
       setError({ showError: false, msg: '' })
-
       firebaseApp()
       const authProvider = getAuth()
 
@@ -83,20 +77,23 @@ function SignIn({ router, ...props }) {
         password
       )
 
-      const resUserInfo = await fetch(
-        `http://localhost:8080/api/v1/user-by-email?email=${email}`
+      const { data: userInfo } = await axios.get(
+        `http://localhost:8080/api/v1/user/get-by-email?email=${email}`
       )
-
-      const userInfo = await resUserInfo.json()
+      console.log(userInfo)
       authContext.setUserAuthInfo(
         authRes.user,
         authRes._tokenResponse,
         userInfo
       )
-
+      console.log('HERE')
       Router.push({ pathname: `/movies/${userInfo.userId}` })
     } catch (err) {
       console.log('createUser error', err)
+      if (err && err.response && err.response.status == 409) {
+        setError({ showError: true, msg: 'esse e-mail já foi cadastrado!' })
+        return
+      }
       setError({
         showError: true,
         msg: 'ocorreu um erro inesperado e não estávamos esperando por isso!',

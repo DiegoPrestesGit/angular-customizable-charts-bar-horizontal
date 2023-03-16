@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.scss'
 import { useContext, useState } from 'react'
 import Router, { withRouter } from 'next/router'
 import { AuthContext } from '../components/firebase/context'
+import axios from 'axios'
 
 function Home() {
   firebaseApp()
@@ -22,17 +23,16 @@ function Home() {
 
   const signInWithEmail = async (email) => {
     try {
-      const res = await fetch(
-        `http://localhost:8080/api/v1/user-by-email?email=${email}`
+      const res = await axios.get(
+        `http://localhost:8080/api/v1/user/get-by-email?email=${email}`
       )
-
-      if (res.status == 404)
-        Router.push({ pathname: '/sign-in', query: { email } })
 
       if (res.status == 200)
         Router.push({ pathname: '/login', query: { email } })
     } catch (err) {
       console.error('signInWithEmail error', err)
+      if (err && err.response && err.response.status == 404)
+        Router.push({ pathname: '/sign-in', query: { email } })
     }
   }
 
@@ -42,18 +42,16 @@ function Home() {
     try {
       const authRes = await signInWithPopup(authProvider, googleProvider)
 
-      const body = JSON.stringify({
+      const body = {
         email: authRes.user.email,
         displayName: authRes.user.displayName,
-      })
+      }
 
-      const userRes = await fetch(`${process.env.GO_CRUD}/api/v1/user-google`, {
-        method: 'post',
-        body,
-      })
-
-      const user = await userRes.json()
-      // console.log(authRes.user, authRes._tokenResponse, user)
+      const { data: user } = await axios.post(
+        `${process.env.GO_CRUD}/api/v1/user/create`,
+        body
+      )
+      // console.log(user, authRes)
       authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
     } catch (err) {
       console.error('signInWithGoogle error', { err, errCode: err.code })

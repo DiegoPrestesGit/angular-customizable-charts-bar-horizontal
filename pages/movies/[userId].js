@@ -3,9 +3,10 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { AuthContext } from '../../components/firebase/context'
 import styles from '../../styles/Movies.module.scss'
 import Movie from '../../components/movie'
-import moviesFullData from '../../mock-movies.json'
+import moviesFullData from '../../movies.json'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 import PaginationNumber from '../../components/pagination-number'
+import axios from 'axios'
 
 function Movies({ props: { userRatings }, ...context }) {
   const authContext = useContext(AuthContext)
@@ -40,9 +41,11 @@ function Movies({ props: { userRatings }, ...context }) {
 
   const recommendations = async () => {
     const userId = userInfo.user.userId
-    const recommended = await (
-      await fetch(`http://localhost:5000/api?userId=${userId}`)
-    ).json()
+    console.log('IDZADA', userId)
+    const recommended = await axios.get(
+      `http://localhost:5000/api?userId=${userId}`
+    )
+    console.log('RECOMENDADO', recommended)
 
     const recommendedMovies = moviesFullData.filter((dataMovie) =>
       recommended.some((recMovie) => recMovie == dataMovie.id)
@@ -151,11 +154,10 @@ function Movies({ props: { userRatings }, ...context }) {
 }
 
 Movies.getInitialProps = async (context) => {
-  const resUserRatings = await fetch(
-    `${process.env.GO_CRUD}/api/v1/rating-by-user?userId=${context.query.userId}`
+  const { data: ratingsJson } = await axios.get(
+    `${process.env.GO_CRUD}/api/v1/rating/get-by-user?userId=${context.query.userId}`
   )
 
-  const ratingsJson = await resUserRatings.json()
   const userRatings = ratingsJson != null ? ratingsJson : []
 
   return { props: { userRatings } }

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import Image from 'next/image'
 import { withRouter } from 'next/router'
@@ -32,11 +33,10 @@ function Login({ router, ...props }) {
       )
       setWrongPassword(false)
 
-      const userRes = await fetch(
-        `http://localhost:8080/api/v1/user-by-email?email=${email}`
+      const { data: user } = await axios.get(
+        `http://localhost:8080/api/v1/user/get-by-email?email=${email}`
       )
 
-      const user = await userRes.json()
       authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
     } catch (err) {
       console.error('signInWithEmail error', err.code)
