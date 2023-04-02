@@ -45,14 +45,22 @@ function Movies({ props: { userRatings }, ...context }) {
       `http://localhost:5000/api?userId=${userId}`
     )
 
-    const recommendedMovies = allMovies.filter((dataMovie) =>
-      moviesRecommended.some(
-        (recMovie) => recMovie.movie_id == dataMovie.kaggleId
-      )
-    )
+    console.log(moviesRecommended)
 
-    console.log(recommendedMovies)
-    setAllMovies(recommendedMovies)
+    const showTheseMoviesInOrder = []
+    for (let i = 0; i < moviesRecommended.length; i++) {
+      const movieRecommendedId = moviesRecommended[i].movie_id
+      if (userRatings.some((rating) => rating.movieId == movieRecommendedId)) {
+        continue
+      }
+      const rightMovieToRecommendIndex = moviesFullData.findIndex(
+        (mov) => mov.kaggleId == movieRecommendedId
+      )
+      showTheseMoviesInOrder.push(moviesFullData[rightMovieToRecommendIndex])
+    }
+
+    console.log(showTheseMoviesInOrder)
+    setAllMovies(showTheseMoviesInOrder)
   }
 
   const searchMovie = () => {
