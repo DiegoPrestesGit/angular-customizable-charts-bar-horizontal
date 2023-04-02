@@ -12,15 +12,11 @@ export default function Movie({ movieData, userId, movieRating, ...context }) {
 
     const body = {
       userId: userId,
-      movieId: movieData.id.toString(),
+      movieId: movieData.kaggleId.toString(),
       ratingValue,
     }
 
-    const a = await axios.post(
-      `${process.env.GO_CRUD}/api/v1/rating/create`,
-      body
-    )
-    console.log(a)
+    await axios.post(`${process.env.GO_CRUD}/api/v1/rating/create`, body)
   }
 
   return (

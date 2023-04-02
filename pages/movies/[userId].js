@@ -12,15 +12,15 @@ function Movies({ props: { userRatings }, ...context }) {
   const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
 
+  const [allMovies, setAllMovies] = useState(moviesFullData)
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
-  const [isRecommendation, setIsRecommendation] = useState(false)
 
   const moviesPerPage = 200
-  const totalPages = Math.ceil(moviesFullData.length / moviesPerPage)
+  const totalPages = Math.ceil(allMovies.length / moviesPerPage)
 
   useEffect(() => {
-    const currentPageMovies = moviesFullData.slice(
+    const currentPageMovies = allMovies.slice(
       (page - 1) * moviesPerPage,
       page * moviesPerPage
     )
@@ -28,12 +28,12 @@ function Movies({ props: { userRatings }, ...context }) {
   }, [])
 
   useEffect(() => {
-    const currentPageMovies = moviesFullData.slice(
+    const currentPageMovies = allMovies.slice(
       (page - 1) * moviesPerPage,
       page * moviesPerPage
     )
     setMovies(currentPageMovies)
-  }, [page])
+  }, [page, allMovies])
 
   const [isSearch, setIsSearch] = useState(false)
   const [findedMovies, setFindedMovies] = useState([])
@@ -41,16 +41,18 @@ function Movies({ props: { userRatings }, ...context }) {
 
   const recommendations = async () => {
     const userId = userInfo.user.userId
-    console.log('IDZADA', userId)
-    const recommended = await axios.get(
+    const { data: moviesRecommended } = await axios.get(
       `http://localhost:5000/api?userId=${userId}`
     )
-    console.log('RECOMENDADO', recommended)
 
-    const recommendedMovies = moviesFullData.filter((dataMovie) =>
-      recommended.some((recMovie) => recMovie == dataMovie.id)
+    const recommendedMovies = allMovies.filter((dataMovie) =>
+      moviesRecommended.some(
+        (recMovie) => recMovie.movie_id == dataMovie.kaggleId
+      )
     )
-    setMovies(recommendedMovies)
+
+    console.log(recommendedMovies)
+    setAllMovies(recommendedMovies)
   }
 
   const searchMovie = () => {
@@ -59,7 +61,7 @@ function Movies({ props: { userRatings }, ...context }) {
       setIsSearch(false)
       return
     }
-    const findIt = moviesFullData.filter((mov) =>
+    const findIt = allMovies.filter((mov) =>
       mov.title.toLowerCase().includes(searchValue.toLowerCase())
     )
     setIsSearch(true)
@@ -107,33 +109,33 @@ function Movies({ props: { userRatings }, ...context }) {
         </div>
         <div className={styles.movieList}>
           {isSearch
-            ? findedMovies.map((singleMovie) => {
+            ? findedMovies.map((singleMovie, index) => {
                 const rated = userRatings
                   ? userRatings.find(
-                      (rating) => rating.movieId == singleMovie.id
+                      (rating) => rating.movieId == singleMovie.kaggleId
                     )
                   : undefined
 
                 return (
                   <Movie
                     movieData={singleMovie}
-                    key={singleMovie.id}
+                    key={`f${index}`}
                     userId={userInfo && userInfo.user.userId}
                     movieRating={(rated && rated.ratingValue) || 0}
                   />
                 )
               })
-            : movies.map((singleMovie) => {
+            : movies.map((singleMovie, index) => {
                 const rated = userRatings
                   ? userRatings.find(
-                      (rating) => rating.movieId == singleMovie.id
+                      (rating) => rating.movieId == singleMovie.kaggleId
                     )
                   : undefined
 
                 return (
                   <Movie
                     movieData={singleMovie}
-                    key={singleMovie.id}
+                    key={index}
                     userId={userInfo && userInfo.user.userId}
                     movieRating={(rated && rated.ratingValue) || 0}
                   />
