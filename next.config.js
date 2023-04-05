@@ -13,7 +13,7 @@ const nextConfig = {
     FIREBASE_MEASUREMENT_ID: 'G-MFJBJC43KR',
     // END OF FIREBASE ENV_VARS
     TMDB_POSTER_HOST: 'https://image.tmdb.org/t/p/w500',
-    GO_CRUD: 'http://172.26.14.61:8080',
+    GO_CRUD: 'http://44.208.245.106:8080',
     RECOMMENDER: 'SOME_IP:5000',
   },
 }
