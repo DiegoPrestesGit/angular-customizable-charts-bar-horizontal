@@ -14,6 +14,7 @@ const nextConfig = {
     // END OF FIREBASE ENV_VARS
     TMDB_POSTER_HOST: 'https://image.tmdb.org/t/p/w500',
     GO_CRUD: '172.26.14.61:8080',
+    RECOMMENDER: 'SOME_IP:5000',
   },
 }
 

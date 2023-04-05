@@ -24,7 +24,7 @@ function Home() {
   const signInWithEmail = async (email) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/v1/user/get-by-email?email=${email}`
+        `${process.env.GO_CRUD}/api/v1/user/get-by-email?email=${email}`
       )
 
       if (res.status == 200)

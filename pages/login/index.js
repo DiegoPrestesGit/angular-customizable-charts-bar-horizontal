@@ -34,7 +34,7 @@ function Login({ router, ...props }) {
       setWrongPassword(false)
 
       const { data: user } = await axios.get(
-        `http://localhost:8080/api/v1/user/get-by-email?email=${email}`
+        `${process.env.GO_CRUD}/api/v1/user/get-by-email?email=${email}`
       )
 
       authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)

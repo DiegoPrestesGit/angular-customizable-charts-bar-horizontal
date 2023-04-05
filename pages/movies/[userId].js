@@ -42,7 +42,7 @@ function Movies({ props: { userRatings }, ...context }) {
   const recommendations = async () => {
     const userId = userInfo.user.userId
     const { data: moviesRecommended } = await axios.get(
-      `http://localhost:5000/api?userId=${userId}`
+      `${process.env.RECOMMENDER}/api?userId=${userId}`
     )
 
     console.log(moviesRecommended)

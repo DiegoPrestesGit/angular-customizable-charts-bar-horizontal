@@ -56,7 +56,7 @@ function SignIn({ router, ...props }) {
       }
 
       const { data: newUser, status } = await axios.post(
-        'http://localhost:8080/api/v1/user/create',
+        '${process.env.GO_CRUD}/api/v1/user/create',
         body
       )
 
@@ -78,7 +78,7 @@ function SignIn({ router, ...props }) {
       )
 
       const { data: userInfo } = await axios.get(
-        `http://localhost:8080/api/v1/user/get-by-email?email=${email}`
+        `${process.env.GO_CRUD}/api/v1/user/get-by-email?email=${email}`
       )
       console.log(userInfo)
       authContext.setUserAuthInfo(
