@@ -56,7 +56,7 @@ function SignIn({ router, ...props }) {
       }
 
       const { data: newUser, status } = await axios.post(
-        '${process.env.GO_CRUD}/api/v1/user/create',
+        `${process.env.GO_CRUD}/api/v1/user/create`,
         body
       )
 
