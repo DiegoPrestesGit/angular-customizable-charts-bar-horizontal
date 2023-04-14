@@ -16,7 +16,7 @@ export default function Movie({ movieData, userId, movieRating, ...context }) {
       ratingValue,
     }
 
-    await axios.post(`${process.env.GO_CRUD}/api/v1/rating/create`, body)
+    await axios.post(`${process.env.TS_CRUD}/api/v1/rating/create`, body)
   }
 
   return (

@@ -12,12 +12,13 @@ function Movies({ props: { userRatings }, ...context }) {
   const authContext = useContext(AuthContext)
   const userInfo = authContext.getUserInfo()
 
-  const [allMovies, setAllMovies] = useState(moviesFullData)
-  const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
+  const [allMovies, setAllMovies] = useState(moviesFullData)
 
   const moviesPerPage = 200
   const totalPages = Math.ceil(allMovies.length / moviesPerPage)
+
+  const [movies, setMovies] = useState([])
 
   useEffect(() => {
     const currentPageMovies = allMovies.slice(
@@ -45,8 +46,6 @@ function Movies({ props: { userRatings }, ...context }) {
       `${process.env.RECOMMENDER}/api?userId=${userId}`
     )
 
-    console.log(moviesRecommended)
-
     const showTheseMoviesInOrder = []
     for (let i = 0; i < moviesRecommended.length; i++) {
       const movieRecommendedId = moviesRecommended[i].movie_id
@@ -59,7 +58,6 @@ function Movies({ props: { userRatings }, ...context }) {
       showTheseMoviesInOrder.push(moviesFullData[rightMovieToRecommendIndex])
     }
 
-    console.log(showTheseMoviesInOrder)
     setAllMovies(showTheseMoviesInOrder)
   }
 
@@ -165,7 +163,7 @@ function Movies({ props: { userRatings }, ...context }) {
 
 Movies.getInitialProps = async (context) => {
   const { data: ratingsJson } = await axios.get(
-    `${process.env.GO_CRUD}/api/v1/rating/get-by-user?userId=${context.query.userId}`
+    `${process.env.TS_CRUD}/api/v1/rating/get-by-user?userId=${context.query.userId}`
   )
 
   const userRatings = ratingsJson != null ? ratingsJson : []

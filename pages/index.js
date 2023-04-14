@@ -24,7 +24,7 @@ function Home() {
   const signInWithEmail = async (email) => {
     try {
       const res = await axios.get(
-        `${process.env.GO_CRUD}/api/v1/user/get-by-email?email=${email}`
+        `${process.env.TS_CRUD}/api/v1/user/get-by-email?email=${email}`
       )
 
       if (res.status == 200)
@@ -48,7 +48,7 @@ function Home() {
       }
 
       const { data: user } = await axios.post(
-        `${process.env.GO_CRUD}/api/v1/user/create`,
+        `${process.env.TS_CRUD}/api/v1/user/create`,
         body
       )
       // console.log(user, authRes)
