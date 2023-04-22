@@ -7,6 +7,7 @@ import moviesFullData from '../../movies.json'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 import PaginationNumber from '../../components/pagination-number'
 import axios from 'axios'
+import Image from 'next/image'
 
 function Movies({ props: { userRatings }, ...context }) {
   const authContext = useContext(AuthContext)
@@ -19,6 +20,8 @@ function Movies({ props: { userRatings }, ...context }) {
   const totalPages = Math.ceil(allMovies.length / moviesPerPage)
 
   const [movies, setMovies] = useState([])
+
+  const [training, setTraining] = useState(false)
 
   useEffect(() => {
     const currentPageMovies = allMovies.slice(
@@ -61,6 +64,17 @@ function Movies({ props: { userRatings }, ...context }) {
     setAllMovies(showTheseMoviesInOrder)
   }
 
+  const trainRecommender = async () => {
+    try {
+      setTraining(true)
+      await axios.get(`${process.env.RECOMMENDER}/train`)
+      setTraining(false)
+    } catch (err) {
+      console.log('trainRecommender err', err)
+      setTraining(false)
+    }
+  }
+
   const searchMovie = () => {
     const searchValue = searchInputRef.current.value
     if (searchValue == '') {
@@ -88,7 +102,40 @@ function Movies({ props: { userRatings }, ...context }) {
               <p>
                 Qnt. de filmes avaliados: <strong>{userRatings.length}</strong>
               </p>
-              <button onClick={recommendations}>RECOMENDAÇÕES</button>
+              <div className={styles.buttons}>
+                <button
+                  onClick={recommendations}
+                  disabled={userRatings.length > 25 ? false : true}
+                >
+                  RECOMENDAÇÕES
+                </button>
+                <button
+                  onClick={trainRecommender}
+                  disabled={userRatings.length > 25 ? false : true}
+                >
+                  TREINAMENTO
+                </button>
+                {training ? (
+                  <>
+                    <Image
+                      src={'/thinking-n-training.gif'}
+                      alt={'thinking emoji'}
+                      width={30}
+                      height={30}
+                    />
+                    <p>treinando!</p>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+              {userRatings.length < 25 ? (
+                <p>
+                  Recomendações e Treinamento disponíveis a partir de 25 filmes
+                </p>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className={styles.withSearch}>

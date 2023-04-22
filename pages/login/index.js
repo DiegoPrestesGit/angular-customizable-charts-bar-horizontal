@@ -73,7 +73,7 @@ function Login({ router, ...props }) {
             <div className={styles.wrong}>
               <Image
                 src={'/thinking-emoji.png'}
-                alte={'thinking emoji'}
+                alt={'thinking emoji'}
                 width={80}
                 height={80}
               />

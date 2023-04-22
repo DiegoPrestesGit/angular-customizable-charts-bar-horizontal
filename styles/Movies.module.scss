@@ -56,6 +56,11 @@
     button {
       padding: 4px 4px 4px 4px;
     }
+
+    .buttons {
+      display: flex;
+      gap: 4px
+    }
   }
 
   .logo {
