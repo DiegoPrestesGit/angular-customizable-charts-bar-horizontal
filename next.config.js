@@ -14,7 +14,7 @@ const nextConfig = {
     // END OF FIREBASE ENV_VARS
     TMDB_POSTER_HOST: 'https://image.tmdb.org/t/p/w500',
     TS_CRUD: 'https://www.backend.themoviebakery.com',
-    RECOMMENDER: 'SOME_IP:5000',
+    RECOMMENDER: 'https://www.recommender.themoviebakery.com',
   },
 }
 

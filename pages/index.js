@@ -46,13 +46,26 @@ function Home() {
         email: authRes.user.email,
         displayName: authRes.user.displayName,
       }
-
-      const { data: user } = await axios.post(
-        `${process.env.TS_CRUD}/api/v1/user/create`,
-        body
+      console.log('email', body.email)
+      const userByEmail = await axios.get(
+        `${process.env.TS_CRUD}/api/v1/user/get-by-email?email=${body.email}`
       )
-      // console.log(user, authRes)
-      authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
+
+      if (userByEmail.status === 204) {
+        const { data: user } = await axios.post(
+          `${process.env.TS_CRUD}/api/v1/user/create`,
+          body
+        )
+        console.log('204 user', user)
+        authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
+      } else {
+        const { data: findedUser } = userByEmail
+        authContext.setUserAuthInfo(
+          authRes.user,
+          authRes._tokenResponse,
+          findedUser
+        )
+      }
     } catch (err) {
       console.error('signInWithGoogle error', { err, errCode: err.code })
     }
