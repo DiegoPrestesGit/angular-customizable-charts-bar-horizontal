@@ -80,13 +80,13 @@ function SignIn({ router, ...props }) {
       const { data: userInfo } = await axios.get(
         `${process.env.TS_CRUD}/api/v1/user/get-by-email?email=${email}`
       )
-      console.log(userInfo)
+
       authContext.setUserAuthInfo(
         authRes.user,
         authRes._tokenResponse,
         userInfo
       )
-      console.log('HERE')
+
       Router.push({ pathname: `/movies/${userInfo.userId}` })
     } catch (err) {
       console.log('createUser error', err)

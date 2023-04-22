@@ -46,7 +46,7 @@ function Home() {
         email: authRes.user.email,
         displayName: authRes.user.displayName,
       }
-      console.log('email', body.email)
+
       const userByEmail = await axios.get(
         `${process.env.TS_CRUD}/api/v1/user/get-by-email?email=${body.email}`
       )
@@ -56,7 +56,7 @@ function Home() {
           `${process.env.TS_CRUD}/api/v1/user/create`,
           body
         )
-        console.log('204 user', user)
+
         authContext.setUserAuthInfo(authRes.user, authRes._tokenResponse, user)
       } else {
         const { data: findedUser } = userByEmail
