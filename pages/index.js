@@ -23,16 +23,17 @@ function Home() {
 
   const signInWithEmail = async (email) => {
     try {
-      const res = await axios.get(
+      const {data, status} = await axios.get(
         `${process.env.TS_CRUD}/api/v1/user/get-by-email?email=${email}`
       )
 
-      if (res.status == 200)
+      if (status == 200){
         Router.push({ pathname: '/login', query: { email } })
-    } catch (err) {
-      console.error('signInWithEmail error', err)
-      if (err && err.response && err.response.status == 404)
+      } else {
         Router.push({ pathname: '/sign-in', query: { email } })
+      }
+    } catch (err) {
+      console.error('signInWithEmail error', err)        
     }
   }
 
