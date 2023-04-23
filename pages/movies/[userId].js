@@ -22,6 +22,7 @@ function Movies({ props: { userRatings }, ...context }) {
   const [movies, setMovies] = useState([])
 
   const [training, setTraining] = useState(false)
+  const [shouldTrain, setShouldTrain] = useState(false)
 
   useEffect(() => {
     const currentPageMovies = allMovies.slice(
@@ -45,9 +46,11 @@ function Movies({ props: { userRatings }, ...context }) {
 
   const recommendations = async () => {
     const userId = userInfo.user.userId
-    const { data: moviesRecommended } = await axios.get(
+    const { data: moviesRecommended, status } = await axios.get(
       `${process.env.RECOMMENDER}/api?userId=${userId}`
     )
+
+    if (status == 500) setShouldTrain(true)
 
     const showTheseMoviesInOrder = []
     for (let i = 0; i < moviesRecommended.length; i++) {
@@ -65,6 +68,7 @@ function Movies({ props: { userRatings }, ...context }) {
   }
 
   const trainRecommender = async () => {
+    setShouldTrain(false)
     try {
       setTraining(true)
       await axios.get(`${process.env.RECOMMENDER}/train`)
@@ -132,6 +136,13 @@ function Movies({ props: { userRatings }, ...context }) {
               {userRatings.length < 25 ? (
                 <p>
                   Recomendações e Treinamento disponíveis a partir de 25 filmes
+                </p>
+              ) : (
+                <></>
+              )}
+              {shouldTrain ? (
+                <p>
+                  Oh, acho que preciso treinar antes de te recomendar algo ;-;
                 </p>
               ) : (
                 <></>
