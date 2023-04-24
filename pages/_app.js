@@ -10,9 +10,17 @@ function MyApp({ Component, pageProps }) {
     <NoSSR>
       <AuthProvider>
         <ProtectRoute>
-          <main className={changaOne.className}>
-            <Component {...pageProps} />
-          </main>
+          {/* <main className={changaOne.className}> */}
+          <style jsx global>
+            {`
+              html,
+              * {
+                font-family: ${changaOne.style.fontFamily};
+              }
+            `}
+          </style>
+          <Component {...pageProps} />
+          {/* </main> */}
         </ProtectRoute>
       </AuthProvider>
     </NoSSR>
