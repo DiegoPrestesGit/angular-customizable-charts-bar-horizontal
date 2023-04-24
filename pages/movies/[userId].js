@@ -45,34 +45,41 @@ function Movies({ props: { userRatings }, ...context }) {
   const searchInputRef = useRef()
 
   const recommendations = async () => {
-    const userId = userInfo.user.userId
-    const { data: moviesRecommended, status } = await axios.get(
-      `${process.env.RECOMMENDER}/api?userId=${userId}`
-    )
-
-    if (status == 500) setShouldTrain(true)
-
-    const showTheseMoviesInOrder = []
-    for (let i = 0; i < moviesRecommended.length; i++) {
-      const movieRecommendedId = moviesRecommended[i].movie_id
-      if (userRatings.some((rating) => rating.movieId == movieRecommendedId)) {
-        continue
-      }
-      const rightMovieToRecommendIndex = moviesFullData.findIndex(
-        (mov) => mov.kaggleId == movieRecommendedId
+    try {
+      const userId = userInfo.user.userId
+      const { data: moviesRecommended, status } = await axios.get(
+        `${process.env.RECOMMENDER}/api?userId=${userId}`
       )
-      showTheseMoviesInOrder.push(moviesFullData[rightMovieToRecommendIndex])
-    }
+      setShouldTrain(false)
 
-    setAllMovies(showTheseMoviesInOrder)
+      const showTheseMoviesInOrder = []
+      for (let i = 0; i < moviesRecommended.length; i++) {
+        const movieRecommendedId = moviesRecommended[i].movie_id
+        if (
+          userRatings.some((rating) => rating.movieId == movieRecommendedId)
+        ) {
+          continue
+        }
+        const rightMovieToRecommendIndex = moviesFullData.findIndex(
+          (mov) => mov.kaggleId == movieRecommendedId
+        )
+        showTheseMoviesInOrder.push(moviesFullData[rightMovieToRecommendIndex])
+      }
+
+      setAllMovies(showTheseMoviesInOrder)
+    } catch (err) {
+      setShouldTrain(true)
+    }
   }
 
   const trainRecommender = async () => {
     setShouldTrain(false)
     try {
       setTraining(true)
-      await axios.get(`${process.env.RECOMMENDER}/train`)
-      setTraining(false)
+      axios.get(`${process.env.RECOMMENDER}/train`)
+      setTimeout(() => {
+        setTraining(false)
+      }, 10000)
     } catch (err) {
       console.log('trainRecommender err', err)
       setTraining(false)
@@ -127,7 +134,7 @@ function Movies({ props: { userRatings }, ...context }) {
                       width={30}
                       height={30}
                     />
-                    <p>treinando!</p>
+                    <p>treinando! Volte em 5 minutos</p>
                   </>
                 ) : (
                   <></>
