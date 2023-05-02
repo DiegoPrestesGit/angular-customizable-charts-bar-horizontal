@@ -21,16 +21,16 @@ export default function Movie({ movieData, userId, movieRating, ...context }) {
 
   return (
     <div className={styles.fullMovie}>
+      <img src={`${process.env.TMDB_POSTER_HOST}${movieData.poster_path}`} />
+      <strong>
+        {movieData.title} ({movieData.release_date.substr(0, 4)})
+      </strong>
       <Rating
         onClick={handleRating}
         allowFraction={true}
         size={24}
         initialValue={movieRating}
       />
-      <img src={`${process.env.TMDB_POSTER_HOST}${movieData.poster_path}`} />
-      <strong>
-        {movieData.title} ({movieData.release_date.substr(0, 4)})
-      </strong>
     </div>
   )
 }
